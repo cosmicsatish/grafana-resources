@@ -1,0 +1,14 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: gitops-test-dashboard
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: gitops-test-folder
+  configMapRef:
+    name: gitops-test-dashboard-dashboard
+    key: dashboard.json
