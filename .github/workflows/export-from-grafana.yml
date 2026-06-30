@@ -98,39 +98,13 @@ jobs:
             echo "- \`$f\`" >> "$GITHUB_STEP_SUMMARY"
           done
 
-      - name: Open PR for review
+      - name: Commit and Push changes
         if: steps.diff.outputs.changed == 'true'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          branch: sync/export-from-grafana
-          title: "feat: Grafana API export — $(date -u '+%Y-%m-%d')"
-          draft: true
-          body: |
-            ## Grafana API Export
-
-            Resources exported directly from **${{ vars.GRAFANA_URL }}** on $(date -u '+%Y-%m-%d %H:%M UTC').
-
-            ### Review checklist
-
-            - [ ] Review each changed file for unexpected modifications
-            - [ ] Fill in any `CHANGE_ME` values in `resources/secrets/` files
-            - [ ] Remove sensitive secret values before committing
-            - [ ] Verify folder structure mirrors Grafana layout
-            - [ ] Merge this PR when satisfied
-
-            ### After merging
-
-            Trigger the **Apply Resources** workflow manually to push to the cluster.
-            Resources are **never** applied automatically.
-
-            ### Note on secrets
-
-            Files in `resources/secrets/` contain `CHANGE_ME` placeholders.
-            **Do NOT commit files with real credential values.**
-            Apply secrets separately via `kubectl create secret` or an external secrets manager.
-          commit-message: "feat: export Grafana resources from API"
-          labels: "grafana-export,needs-review"
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -m "feat: export Grafana resources from API"
+          git push origin main
 
       - name: No changes detected
         if: steps.diff.outputs.changed == 'false'
