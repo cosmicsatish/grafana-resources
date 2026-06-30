@@ -8,6 +8,7 @@ metadata:
 spec:
   external:
     url: https://cosmicsatish.grafana.net
+    tenantNamespace: grafana
     apiKey:
       name: grafana-cloud-credentials
       key: token
