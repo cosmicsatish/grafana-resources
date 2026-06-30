@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-ml-metrics
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-ml-metrics
+  datasource:
+    name: grafanacloud-ml-metrics
+    type: prometheus
+    url: https://machine-learning-prod-ap-south-1.grafana.net/machine-learning/predict
+    access: proxy
+    uid: grafanacloud-ml-metrics
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

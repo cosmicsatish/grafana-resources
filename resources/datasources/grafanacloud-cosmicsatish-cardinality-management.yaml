@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-cardinality-management
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-cardinality-management
+  datasource:
+    name: grafanacloud-cosmicsatish-cardinality-management
+    type: grafanacloud-cardinality-datasource
+    url: https://insights-prod-ap-south-1.grafana.net/usage/v1/metrics/2753177
+    access: proxy
+    uid: grafanacloud-cardinality-management
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

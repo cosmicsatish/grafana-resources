@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: cardinality-management-1-overview
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: grafanacloud
+  uid: cardinality-management
+  configMapRef:
+    name: cardinality-management-1-overview-dashboard
+    key: dashboard.json

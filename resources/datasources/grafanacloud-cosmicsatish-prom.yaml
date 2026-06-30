@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-prom
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-prom
+  datasource:
+    name: grafanacloud-cosmicsatish-prom
+    type: prometheus
+    url: https://prometheus-prod-43-prod-ap-south-1.grafana.net/api/prom
+    access: proxy
+    uid: grafanacloud-prom
+    isDefault: true
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-usage-insights
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-usage-insights
+  datasource:
+    name: grafanacloud-cosmicsatish-usage-insights
+    type: loki
+    url: https://insight-logs-prod-ap-south-1.grafana.net
+    access: proxy
+    uid: grafanacloud-usage-insights
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

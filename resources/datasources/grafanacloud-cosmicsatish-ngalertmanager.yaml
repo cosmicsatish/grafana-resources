@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-ngalertmanager
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-ngalertmanager
+  datasource:
+    name: grafanacloud-cosmicsatish-ngalertmanager
+    type: alertmanager
+    url: https://alertmanager-prod-ap-south-1.grafana.net
+    access: proxy
+    uid: grafanacloud-ngalertmanager
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

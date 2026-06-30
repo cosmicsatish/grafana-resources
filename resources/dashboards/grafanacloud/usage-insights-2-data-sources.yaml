@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: usage-insights-2-data-sources
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: grafanacloud
+  uid: AEbrOO2Mz
+  configMapRef:
+    name: usage-insights-2-data-sources-dashboard
+    key: dashboard.json

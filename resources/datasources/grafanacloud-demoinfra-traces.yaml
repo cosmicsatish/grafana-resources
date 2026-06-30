@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-demoinfra-traces
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-demoinfra-traces
+  datasource:
+    name: grafanacloud-demoinfra-traces
+    type: tempo
+    url: https://tempo-prod-04-prod-us-east-0.grafana.net/tempo
+    access: proxy
+    uid: grafanacloud-demoinfra-traces
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

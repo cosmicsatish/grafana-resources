@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: loki-lbac
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: cf9xcu7z8t4hsb
+  datasource:
+    name: loki-lbac
+    type: loki
+    url: https://logs-prod-028.grafana.net
+    access: proxy
+    uid: cf9xcu7z8t4hsb
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

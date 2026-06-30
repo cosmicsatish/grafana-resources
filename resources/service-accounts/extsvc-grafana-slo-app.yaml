@@ -1,0 +1,10 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaServiceAccount
+metadata:
+  name: extsvc-grafana-slo-app
+  namespace: grafana
+spec:
+  instanceName: grafana
+  name: extsvc-grafana-slo-app
+  role: Viewer
+  isDisabled: false

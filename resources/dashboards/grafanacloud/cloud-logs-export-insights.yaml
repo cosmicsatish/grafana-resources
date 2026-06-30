@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: cloud-logs-export-insights
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: grafanacloud
+  uid: 4_D6mSh4z
+  configMapRef:
+    name: cloud-logs-export-insights-dashboard
+    key: dashboard.json

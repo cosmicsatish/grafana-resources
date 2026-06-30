@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-profiles
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-profiles
+  datasource:
+    name: grafanacloud-cosmicsatish-profiles
+    type: grafana-pyroscope-datasource
+    url: https://profiles-prod-018.grafana.net
+    access: proxy
+    uid: grafanacloud-profiles
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

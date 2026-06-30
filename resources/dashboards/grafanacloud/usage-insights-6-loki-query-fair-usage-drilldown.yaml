@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: usage-insights-6-loki-query-fair-usage-drilldown
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: grafanacloud
+  uid: cdybdibbio2dcd
+  configMapRef:
+    name: usage-insights-6-loki-query-fair-usage-drilldown-dashboard
+    key: dashboard.json

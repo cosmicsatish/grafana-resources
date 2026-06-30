@@ -1,0 +1,10 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaServiceAccount
+metadata:
+  name: terraform
+  namespace: grafana
+spec:
+  instanceName: grafana
+  name: Terraform
+  role: Admin
+  isDisabled: false

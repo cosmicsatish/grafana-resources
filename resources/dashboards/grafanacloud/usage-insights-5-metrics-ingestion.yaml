@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: usage-insights-5-metrics-ingestion
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: grafanacloud
+  uid: cdn9jukg55bswb
+  configMapRef:
+    name: usage-insights-5-metrics-ingestion-dashboard
+    key: dashboard.json

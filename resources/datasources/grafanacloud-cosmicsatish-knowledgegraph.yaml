@@ -1,0 +1,20 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-knowledgegraph
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-knowledgegraph
+  datasource:
+    name: grafanacloud-cosmicsatish-knowledgegraph
+    type: grafana-knowledgegraph-datasource
+    url: ""
+    access: proxy
+    uid: grafanacloud-knowledgegraph
+    isDefault: false
+    basicAuth: false
+  valuesFrom: null

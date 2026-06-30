@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: usage-insights-3-query-errors
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: grafanacloud
+  uid: MpmkYhRVz
+  configMapRef:
+    name: usage-insights-3-query-errors-dashboard
+    key: dashboard.json
