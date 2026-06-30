@@ -3,8 +3,6 @@ kind: GrafanaFolder
 metadata:
   name: grafanacloud
   namespace: grafana
-  annotations:
-    argocd.argoproj.io/sync-options: Prune=false
 spec:
   instanceSelector:
     matchLabels:
