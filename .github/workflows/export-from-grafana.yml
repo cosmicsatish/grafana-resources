@@ -81,7 +81,8 @@ jobs:
       - name: Check for changes
         id: diff
         run: |
-          git diff --quiet resources/ \
+          git add -A resources/
+          git diff --cached --quiet \
             && echo "changed=false" >> "$GITHUB_OUTPUT" \
             || echo "changed=true"  >> "$GITHUB_OUTPUT"
 
