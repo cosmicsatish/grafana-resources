@@ -1,0 +1,12 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: grafanacloud
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  title: GrafanaCloud
+  uid: afq0ilsj22n7ka

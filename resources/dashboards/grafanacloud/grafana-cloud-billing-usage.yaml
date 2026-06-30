@@ -1,0 +1,15 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: grafana-cloud-billing-usage
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  folderRef: grafanacloud
+  uid: 709abbec-e08d-43ab-9a1b-45b6a0407fcd
+  configMapRef:
+    name: grafana-cloud-billing-usage-dashboard
+    key: dashboard.json

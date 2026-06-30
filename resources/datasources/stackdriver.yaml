@@ -1,0 +1,20 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: stackdriver
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: cfl5krf1mg0e8d
+  datasource:
+    name: stackdriver
+    type: stackdriver
+    url: ""
+    access: proxy
+    uid: cfl5krf1mg0e8d
+    isDefault: false
+    basicAuth: false
+  valuesFrom: null

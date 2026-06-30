@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-alert-state-history
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-alert-state-history
+  datasource:
+    name: grafanacloud-cosmicsatish-alert-state-history
+    type: loki
+    url: https://insight-logs-prod-ap-south-1.grafana.net
+    access: proxy
+    uid: grafanacloud-alert-state-history
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

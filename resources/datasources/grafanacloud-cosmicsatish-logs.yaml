@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-logs
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-logs
+  datasource:
+    name: grafanacloud-cosmicsatish-logs
+    type: loki
+    url: https://logs-prod-028.grafana.net
+    access: proxy
+    uid: grafanacloud-logs
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

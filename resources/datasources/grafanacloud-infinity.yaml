@@ -1,0 +1,20 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-infinity
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-infinity
+  datasource:
+    name: grafanacloud-infinity
+    type: yesoreyeram-infinity-datasource
+    url: ""
+    access: proxy
+    uid: grafanacloud-infinity
+    isDefault: false
+    basicAuth: false
+  valuesFrom: null

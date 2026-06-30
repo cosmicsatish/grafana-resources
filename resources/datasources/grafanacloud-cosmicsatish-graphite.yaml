@@ -1,0 +1,21 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: grafanacloud-cosmicsatish-graphite
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: grafanacloud-graphite
+  datasource:
+    name: grafanacloud-cosmicsatish-graphite
+    type: graphite
+    url: https://graphite-prod-43-prod-ap-south-1.grafana.net/graphite
+    access: proxy
+    uid: grafanacloud-graphite
+    isDefault: false
+    basicAuth: true
+    basicAuthUser: ""
+  valuesFrom: null

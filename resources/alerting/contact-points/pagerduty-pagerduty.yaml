@@ -1,0 +1,24 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaContactPoint
+metadata:
+  name: pagerduty-pagerduty
+  namespace: grafana
+spec:
+  instanceSelector:
+    matchLabels:
+      app: grafana
+  resyncPeriod: 0s
+  uid: dfe41n736h3wgf
+  name: PagerDuty
+  receivers:
+    - uid: dfe41n736h3wgf
+      type: pagerduty
+      disableResolveMessage: false
+      settings:
+        integrationKey: '[REDACTED]'
+  valuesFrom:
+    - targetPath: settings.integrationKey
+      valueFrom:
+        secretKeyRef:
+          name: pagerduty-pagerduty-credentials
+          key: integrationKey
