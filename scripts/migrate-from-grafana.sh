@@ -811,7 +811,6 @@ migrate_notification_policy() {
         route: $pol
       }
     }' | yq -P '.')
-  yaml=$(maybe_finalizer "$yaml")
   write_file "$OUTPUT_DIR/alerting/notification-policies/default-policy.yaml" "$yaml"
   echo ""
 }
