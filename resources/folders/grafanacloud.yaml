@@ -4,6 +4,7 @@ metadata:
   name: grafanacloud
   namespace: grafana
 spec:
+  finalizerPolicy: Ignore
   instanceSelector:
     matchLabels:
       app: grafana
