@@ -1,0 +1,31 @@
+# yamllint configuration
+# Docs: https://yamllint.readthedocs.io/en/stable/configuration.html
+extends: default
+
+rules:
+  # Allow long lines in dashboard JSON embedded inside ConfigMaps/CRs
+  line-length:
+    max: 200
+    level: warning
+
+  # Allow both truthy values
+  truthy:
+    allowed-values: ['true', 'false', 'yes', 'no', 'on', 'off']
+    check-keys: false
+
+  # Grafana CRs may or may not have a leading --- document-start marker
+  document-start: disable
+
+  # Comments are allowed anywhere
+  comments:
+    require-starting-space: true
+    min-spaces-from-content: 2
+
+  # Indentation: 2 spaces (Kubernetes standard)
+  indentation:
+    spaces: 2
+    indent-sequences: true
+    check-multi-line-strings: false
+
+ignore: |
+  .github/

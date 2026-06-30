@@ -1,0 +1,36 @@
+name: Validate Resources
+
+# =============================================================================
+# validate.yml
+# =============================================================================
+# Runs on every PR targeting main and on every push to main.
+# All checks must pass before a PR can be merged.
+# =============================================================================
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    name: Lint & validate
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yamllint
+        run: pip install yamllint
+
+      - name: Install yq (pinned)
+        run: |
+          YQ_VERSION="v4.44.3"
+          sudo wget -qO /usr/local/bin/yq \
+            "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64"
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+
+      - name: Run Makefile validate
+        run: make validate

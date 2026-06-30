@@ -1,0 +1,132 @@
+name: Export Grafana Resources (API → Git)
+
+# =============================================================================
+# export-from-grafana.yml
+# =============================================================================
+# Exports resources DIRECTLY from the Grafana HTTP API using migrate-from-grafana.sh
+# and opens a PR for human review.
+# =============================================================================
+
+on:
+  schedule:
+    - cron: "0 3 * * 0"   # 03:00 UTC every Sunday
+  workflow_dispatch:
+    inputs:
+      select_type:
+        description: "Resource types to export (comma-separated; blank = all)"
+        required: false
+        default: ""
+      force:
+        description: "Overwrite existing files"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+jobs:
+  export:
+    name: Export from Grafana API
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          # Install jq (usually pre-installed on ubuntu-latest)
+          command -v jq || sudo apt-get install -y jq
+
+          # Install yq (pinned version for reproducibility)
+          YQ_VERSION="v4.44.3"
+          sudo wget -qO /usr/local/bin/yq \
+            "https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64"
+          sudo chmod +x /usr/local/bin/yq
+          yq --version
+
+      - name: Make scripts executable
+        run: chmod +x scripts/*.sh
+
+      - name: Validate Grafana connectivity
+        env:
+          GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
+          GRAFANA_URL: ${{ vars.GRAFANA_URL }}
+        run: |
+          STATUS=$(curl -sSf -o /dev/null -w "%{http_code}" \
+            -H "Authorization: Bearer $GRAFANA_TOKEN" \
+            "$GRAFANA_URL/api/health" || echo "000")
+          if [[ "$STATUS" != "200" ]]; then
+            echo "❌ Cannot reach Grafana at $GRAFANA_URL (HTTP $STATUS)"
+            exit 1
+          fi
+          echo "✅ Grafana reachable (HTTP $STATUS)"
+
+      - name: Export resources from Grafana API
+        env:
+          GRAFANA_TOKEN: ${{ secrets.GRAFANA_TOKEN }}
+          GRAFANA_URL: ${{ vars.GRAFANA_URL }}
+        run: |
+          ARGS=(
+            --url  "$GRAFANA_URL"
+            --token "$GRAFANA_TOKEN"
+            --namespace "${{ vars.NAMESPACE || 'grafana' }}"
+          )
+
+          [[ "${{ inputs.force || 'true' }}" == "true" ]] && ARGS+=(--force)
+
+          SELECT="${{ inputs.select_type }}"
+          [[ -n "$SELECT" ]] && ARGS+=(--select-type "$SELECT")
+
+          ./scripts/migrate-from-grafana.sh "${ARGS[@]}"
+
+      - name: Check for changes
+        id: diff
+        run: |
+          git diff --quiet resources/ \
+            && echo "changed=false" >> "$GITHUB_OUTPUT" \
+            || echo "changed=true"  >> "$GITHUB_OUTPUT"
+
+      - name: Summarise changes
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          echo "### Changed files" >> "$GITHUB_STEP_SUMMARY"
+          git diff --name-only resources/ | while read -r f; do
+            echo "- \`$f\`" >> "$GITHUB_STEP_SUMMARY"
+          done
+
+      - name: Open PR for review
+        if: steps.diff.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: sync/export-from-grafana
+          title: "feat: Grafana API export — $(date -u '+%Y-%m-%d')"
+          draft: true
+          body: |
+            ## Grafana API Export
+
+            Resources exported directly from **${{ vars.GRAFANA_URL }}** on $(date -u '+%Y-%m-%d %H:%M UTC').
+
+            ### Review checklist
+
+            - [ ] Review each changed file for unexpected modifications
+            - [ ] Fill in any `CHANGE_ME` values in `resources/secrets/` files
+            - [ ] Remove sensitive secret values before committing
+            - [ ] Verify folder structure mirrors Grafana layout
+            - [ ] Merge this PR when satisfied
+
+            ### After merging
+
+            Trigger the **Apply Resources** workflow manually to push to the cluster.
+            Resources are **never** applied automatically.
+
+            ### Note on secrets
+
+            Files in `resources/secrets/` contain `CHANGE_ME` placeholders.
+            **Do NOT commit files with real credential values.**
+            Apply secrets separately via `kubectl create secret` or an external secrets manager.
+          commit-message: "feat: export Grafana resources from API"
+          labels: "grafana-export,needs-review"
+
+      - name: No changes detected
+        if: steps.diff.outputs.changed == 'false'
+        run: echo "✅ No changes detected — Grafana state matches repo."
