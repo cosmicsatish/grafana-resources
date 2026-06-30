@@ -531,14 +531,13 @@ migrate_dashboards() {
     local dash_json
     dash_json=$(gapi "/dashboards/uid/$dash_uid" | jq '.dashboard | del(.id) | .version = 0')
 
-    # ── ConfigMap (jq builds the entire object; no envsubst/E2BIG) ────────────
+    # ── ConfigMap (stdin builds the entire object; no envsubst/E2BIG) ────────────
     local cm_yaml
-    cm_yaml=$(jq -n \
+    cm_yaml=$(echo "$dash_json" | jq \
       --arg ns "$NAMESPACE" \
       --arg n  "$n" \
       --arg ik "$INSTANCE_KEY" \
       --arg iv "$INSTANCE_VAL" \
-      --argjson dash "$dash_json" \
       '{
         apiVersion: "v1",
         kind: "ConfigMap",
@@ -547,7 +546,7 @@ migrate_dashboards() {
           namespace: $ns,
           labels: { ($ik): $iv }
         },
-        data: { "dashboard.json": ($dash | tojson) }
+        data: { "dashboard.json": (. | tojson) }
       }' | yq -P '.')
     write_file "$dash_dir/${n}-configmap.yaml" "$cm_yaml"
 
@@ -635,7 +634,7 @@ migrate_alert_rule_groups() {
       }]')
 
     local yaml
-    yaml=$(jq -n \
+    yaml=$(echo "$rules_json" | jq \
       --arg ns       "$NAMESPACE" \
       --arg n        "$n" \
       --arg ik       "$INSTANCE_KEY" \
@@ -643,7 +642,6 @@ migrate_alert_rule_groups() {
       --arg fr       "$folder_cr" \
       --arg rg       "$rg" \
       --arg interval "$interval" \
-      --argjson rules "$rules_json" \
       '{
         apiVersion: "grafana.integreatly.org/v1beta1",
         kind: "GrafanaAlertRuleGroup",
@@ -654,7 +652,7 @@ migrate_alert_rule_groups() {
           folderRef: $fr,
           name: $rg,
           interval: $interval,
-          rules: $rules
+          rules: .
         }
       }' | yq -P '.')
     write_file "$alert_dir/${n}.yaml" "$yaml"
